@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Analyst + Auditor Research Agent
 
 A production-quality, deterministic multi-agent research evaluation system featuring an **Analyst Agent** paired with an independent **Auditor Agent**, persistent entity-centric memory, live web search, deterministic claim verification, and continuous feedback learning.
@@ -366,3 +367,6 @@ All 53 unit tests pass cleanly:
 1. **Paywalled Sources**: Financial publications with strict paywalls (e.g., Bloomberg, WSJ) may return access denied errors; the fetcher falls back to public regulatory disclosures on BSE/NSE.
 2. **Javascript-Rendered Single-Page Apps**: Some client-side rendered portals require a headless browser for dynamic rendering; `httpx` handles static and server-rendered HTML.
 3. **Date Resolution**: Older documents that lack standard OpenGraph or schema.org date metadata rely on passage-level year extraction.
+=======
+# thuli
+>>>>>>> 362d56d1ff6d70981caf62e248a3f804d7f55c21
