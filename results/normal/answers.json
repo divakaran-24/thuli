@@ -2,18 +2,46 @@
   "q01": {
     "question": "What are the core retail jewellery brands operated by Titan Company Limited in India?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India [https://titancompany.in/investors/annual-report-fy24].",
+    "answer": "Titan Company Limited operates several core retail jewellery brands in India, including Tanishq, Zoya, Mia by Tanishq, and CaratLane [https://alphastreet.com/india/titan-company-indias-most-trusted-jewelers]. These brands cater to diverse consumer segments, ranging from mass-market to luxury [https://trendlyne.com/equity/about/1403/TITAN/titan-company-ltd].",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India.",
+        "text": "Titan Company Limited operates core retail jewellery brands including Tanishq, Zoya, Mia by Tanishq, and CaratLane in India.",
         "evidence_ids": [
-          "ev_1"
+          "ev_70b9ed00_1"
         ],
         "citations": [
-          "https://titancompany.in/investors/annual-report-fy24"
+          "https://alphastreet.com/india/titan-company-indias-most-trusted-jewelers"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c2",
+        "text": "Titan Company Limited employs a multi-brand strategy to cater to consumer segments ranging from mass-market to luxury.",
+        "evidence_ids": [
+          "ev_3bf6b63d_2"
+        ],
+        "citations": [
+          "https://trendlyne.com/equity/about/1403/TITAN/titan-company-ltd"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
         "confidence": 1.0
       }
     ],
@@ -22,18 +50,46 @@
   "q02": {
     "question": "How many net new jewellery stores did Titan Company add across its retail network in FY 2023-24?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India [https://titancompany.in/investors/annual-report-fy24].",
+    "answer": "The available sources did not establish the exact total number of net new jewellery stores added by Titan Company across its entire retail network in FY 2023-24. While the company reported plans to open over 40 new stores in FY 2023-24 [https://timesofindia.indiatimes.com/business/india-business/titan-to-open-18-international-stores-of-tanishq-in-fy24/articleshow/101612014.cms] and aimed to reach 25 international stores by the end of the fiscal year [https://www.bseindia.com/xml-data/corpfiling/AttachHis/45417344-b78e-4ff6-8085-7c17a0e906db.pdf], the provided evidence does not contain a consolidated net figure for all jewellery store additions during that period.",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India.",
+        "text": "Titan Company planned to open over 40 new stores in FY 2023-24.",
         "evidence_ids": [
-          "ev_1"
+          "ev_911988fd_3"
         ],
         "citations": [
-          "https://titancompany.in/investors/annual-report-fy24"
+          "https://timesofindia.indiatimes.com/business/india-business/titan-to-open-18-international-stores-of-tanishq-in-fy24/articleshow/101612014.cms"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c2",
+        "text": "Titan Company aimed to strengthen its international presence to 25 stores by the end of FY 2023-24.",
+        "evidence_ids": [
+          "ev_11da7b7d_1"
+        ],
+        "citations": [
+          "https://www.bseindia.com/xml-data/corpfiling/AttachHis/45417344-b78e-4ff6-8085-7c17a0e906db.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
         "confidence": 1.0
       }
     ],
@@ -42,18 +98,66 @@
   "q03": {
     "question": "What was Titan Company's total retail jewellery store footprint at the end of FY 2023-24, broken down between Tanishq, Mia, and CaratLane?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India [https://titancompany.in/investors/annual-report-fy24].",
+    "answer": "As of the end of FY 2023-24, Titan Company operated 464 Tanishq stores across 270 towns [https://www.livemint.com/companies/news/titan-company-to-expand-jewellery-market-share-grow-emerging-businesses-11717313255735.html]. Regarding CaratLane, the company operated 272 stores at the time of reporting for that fiscal period [https://nsearchives.nseindia.com/corporate/TITAN_31052024112612_SEinvestorpresentation2024.pdf]. The available sources did not establish the specific total retail store count for Mia by Tanishq at the end of FY 2023-24, though it is noted that 140 Mia stores were added over the three-year period leading up to that time [https://www.livemint.com/companies/news/titan-company-to-expand-jewellery-market-share-grow-emerging-businesses-11717313255735.html].",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India.",
+        "text": "Titan Company operated 464 Tanishq stores across 270 towns at the end of FY 2023-24.",
         "evidence_ids": [
-          "ev_1"
+          "ev_aff27c36_3"
         ],
         "citations": [
-          "https://titancompany.in/investors/annual-report-fy24"
+          "https://www.livemint.com/companies/news/titan-company-to-expand-jewellery-market-share-grow-emerging-businesses-11717313255735.html"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['2023', '24'] from claim text not found in cited evidence.",
+        "is_verified": false,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c2",
+        "text": "CaratLane operated 272 stores at the end of FY 2023-24.",
+        "evidence_ids": [
+          "ev_9fa8ed63_1"
+        ],
+        "citations": [
+          "https://nsearchives.nseindia.com/corporate/TITAN_31052024112612_SEinvestorpresentation2024.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c3",
+        "text": "Titan added 140 Mia stores in the three years preceding the end of FY 2023-24.",
+        "evidence_ids": [
+          "ev_aff27c36_3"
+        ],
+        "citations": [
+          "https://www.livemint.com/companies/news/titan-company-to-expand-jewellery-market-share-grow-emerging-businesses-11717313255735.html"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['2023', '24'] from claim text not found in cited evidence.",
+        "is_verified": false,
         "confidence": 1.0
       }
     ],
@@ -62,38 +166,76 @@
   "q04": {
     "question": "How many retail showrooms did Kalyan Jewellers operate in India at the close of FY 2023-24?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan operates 850 domestic stores [https://kalyanjewellers.net/investor-relations/q4-fy24-update], Kalyan operates 250 Indian showrooms, Malabar operates over 180, and Senco operates 159 showrooms.",
+    "answer": "I could not verify this from the available sources. The available sources did not establish sufficient evidence to answer this question.",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan operates 850 domestic jewellery stores.",
+        "text": "Kalyan Jewellers operated 278 showrooms in India at the close of FY 2023-24.",
         "evidence_ids": [
-          "ev_1"
+          "ev_4522ce7d_1"
         ],
         "citations": [
-          "https://kalyanjewellers.net/investor-relations/q4-fy24-update"
+          "https://nsearchives.nseindia.com/annual_reports/AR_27422_KALYANKJIL_2024_2025_A_14082025120016.pdf"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['2023'] from claim text not found in cited evidence.",
+        "is_verified": false,
         "confidence": 1.0
       }
     ],
-    "unanswered_aspects": []
+    "unanswered_aspects": [
+      "Candidate claims rejected by verification gate: [\"Numerical discrepancy: Value(s) ['2023'] from claim text not found in cited evidence.\"]"
+    ]
   },
   "q05": {
     "question": "Between Titan Company and Kalyan Jewellers, which retailer added more net new showrooms during FY 2023-24?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India [https://titancompany.in/investors/annual-report-fy24].",
+    "answer": "Based on verified comparable disclosures for the period:\n- Kalyan Jewellers had 147 showrooms in India as of March 31, 2023. [Source: https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf]\n- Kalyan Jewellers had 204 showrooms in India as of March 31, 2024. [Source: https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf]\n",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India.",
+        "text": "Kalyan Jewellers had 147 showrooms in India as of March 31, 2023.",
         "evidence_ids": [
-          "ev_1"
+          "ev_7de63ed5_1"
         ],
         "citations": [
-          "https://titancompany.in/investors/annual-report-fy24"
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c2",
+        "text": "Kalyan Jewellers had 204 showrooms in India as of March 31, 2024.",
+        "evidence_ids": [
+          "ev_7de63ed5_1"
+        ],
+        "citations": [
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
         "confidence": 1.0
       }
     ],
@@ -102,50 +244,118 @@
   "q06": {
     "question": "How many retail showrooms did Senco Gold and Malabar Gold & Diamonds operate across India as of 2024?",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan operates 850 domestic stores [https://sencogoldanddiamonds.com/investor-relations/fy24], Kalyan operates 250 Indian showrooms, Malabar operates over 180, and Senco operates 159 showrooms.",
+    "answer": "I could not verify this from the available sources. The available sources did not establish sufficient evidence to answer this question.",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan operates 850 domestic jewellery stores.",
+        "text": "Senco Gold Ltd. operated over 165 stores in India as of 2024.",
         "evidence_ids": [
-          "ev_1"
+          "ev_eae1afb4_1"
         ],
         "citations": [
-          "https://sencogoldanddiamonds.com/investor-relations/fy24"
+          "https://www.scribd.com/document/875891166/Senco-Investment-Thesis-2"
         ],
         "entity": null,
-        "confidence": 1.0
-      }
-    ],
-    "unanswered_aspects": []
-  },
-  "q07": {
-    "question": "What is the total showroom count of Kalyan Jewellers, and why do published reports show conflicting numbers between 250 and over 290 showrooms?",
-    "mode": "NORMAL_ANALYST",
-    "answer": "The discrepancy is resolved by geographic scope: Kalyan operated 250 domestic Indian showrooms and 293 total showrooms across its global network [https://kalyanjewellers.net/investor-relations/q4-fy24-update].",
-    "claims": [
-      {
-        "claim_id": "c1",
-        "text": "Kalyan operated 250 domestic Indian showrooms in FY24.",
-        "evidence_ids": [
-          "ev_1"
-        ],
-        "citations": [
-          "https://kalyanjewellers.net/investor-relations/q4-fy24-update"
-        ],
-        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['2024'] from claim text not found in cited evidence.",
+        "is_verified": false,
         "confidence": 1.0
       },
       {
         "claim_id": "c2",
-        "text": "Kalyan operated 293 total showrooms globally including its international network.",
+        "text": "Malabar Gold & Diamonds planned to reach a global showroom count of 375 by October 2024.",
         "evidence_ids": [
-          "ev_1"
+          "ev_6e9aa43c_3"
         ],
         "citations": [
-          "https://kalyanjewellers.net/investor-relations/q4-fy24-update"
+          "https://retail.economictimes.indiatimes.com/tag/malabar+gold+&+diamonds"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['2024'] from claim text not found in cited evidence.",
+        "is_verified": false,
+        "confidence": 1.0
+      }
+    ],
+    "unanswered_aspects": [
+      "Candidate claims rejected by verification gate: [\"Numerical discrepancy: Value(s) ['2024'] from claim text not found in cited evidence.\", \"Numerical discrepancy: Value(s) ['2024'] from claim text not found in cited evidence.\"]"
+    ]
+  },
+  "q07": {
+    "question": "What is the total showroom count of Kalyan Jewellers, and why do published reports show conflicting numbers between 250 and over 290 showrooms?",
+    "mode": "NORMAL_ANALYST",
+    "answer": "As of March 31, 2026, Kalyan Jewellers reported a total showroom network of 507 locations, comprising 466 showrooms in India (including Candere) and 41 international showrooms [https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf]. The discrepancy in reported figures\u2014such as the range between 250 and 290\u2014stems from variations in reporting periods, the inclusion or exclusion of specific sub-brands like Candere, and the distinction between standalone Kalyan-branded stores and the broader group network [https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf, https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202024-2025/Earnings%20Presentation%202025/q4-Investor%20Presentation.pdf]. For instance, reports from FY25 identified 278 standalone Kalyan showrooms in India alongside 73 Candere outlets, totaling 351 showrooms in India [https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202024-2025/Earnings%20Presentation%202025/q4-Investor%20Presentation.pdf].",
+    "claims": [
+      {
+        "claim_id": "c1",
+        "text": "As of March 31, 2026, Kalyan Jewellers reported a total showroom network of 507 locations, including 466 in India and 41 internationally.",
+        "evidence_ids": [
+          "ev_7de63ed5_1"
+        ],
+        "citations": [
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['31', '2026', '507', '41'] from claim text not found in cited evidence.",
+        "is_verified": false,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c2",
+        "text": "Conflicting showroom counts arise from differences in reporting periods, the inclusion of Candere outlets, and the distinction between standalone Kalyan stores and the total group network.",
+        "evidence_ids": [
+          "ev_7de63ed5_1",
+          "ev_52127d5d_1"
+        ],
+        "citations": [
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf",
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202024-2025/Earnings%20Presentation%202025/q4-Investor%20Presentation.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
+        "confidence": 1.0
+      },
+      {
+        "claim_id": "c3",
+        "text": "In FY25, the company reported 278 standalone Kalyan showrooms and 73 Candere outlets in India, for a total of 351 Indian showrooms.",
+        "evidence_ids": [
+          "ev_52127d5d_1"
+        ],
+        "citations": [
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202024-2025/Earnings%20Presentation%202025/q4-Investor%20Presentation.pdf"
+        ],
+        "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "REJECTED",
+        "rejection_reason": "Numerical discrepancy: Value(s) ['278', '73'] from claim text not found in cited evidence.",
+        "is_verified": false,
         "confidence": 1.0
       }
     ],
@@ -154,18 +364,26 @@
   "q08": {
     "question": "Across Titan Company, Kalyan Jewellers, Senco Gold, and Malabar Gold, compare their retail expansion store counts during FY 2023-24 and rank them by network size.",
     "mode": "NORMAL_ANALYST",
-    "answer": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India [https://www.bseindia.com/filings/titan_fy24_presentation.pdf].",
+    "answer": "Based on verified comparable disclosures for the period:\n- As of March 31, 2024, Kalyan Jewellers operated 204 showrooms in India and 36 showrooms in international markets. [Source: https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf]\n",
     "claims": [
       {
         "claim_id": "c1",
-        "text": "Titan Company operates core retail jewellery brands Tanishq, Mia, Zoya, and CaratLane in India.",
+        "text": "As of March 31, 2024, Kalyan Jewellers operated 204 showrooms in India and 36 showrooms in international markets.",
         "evidence_ids": [
-          "ev_1"
+          "ev_7de63ed5_2"
         ],
         "citations": [
-          "https://www.bseindia.com/filings/titan_fy24_presentation.pdf"
+          "https://www.kalyanjewellers.net/images/investors-new/pdf/quarterly-results/FY%202025-2026/Earnings%20Presentation%202026/Investor%20PresentationQ4_signed.pdf"
         ],
         "entity": null,
+        "metric": null,
+        "business_segment": null,
+        "geography": null,
+        "period": null,
+        "source_type": "LIVE",
+        "verification_status": "VERIFIED",
+        "rejection_reason": null,
+        "is_verified": true,
         "confidence": 1.0
       }
     ],

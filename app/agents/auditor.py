@@ -68,7 +68,7 @@ class AuditorAgent:
         self._client = None
 
     def _get_client(self) -> Any:
-        """Lazily initialize Google GenAI Client."""
+        """Initialize Google GenAI Client."""
         if self._client is None:
             from google import genai
             self._client = genai.Client(api_key=self.api_key)
@@ -98,6 +98,7 @@ class AuditorAgent:
                     system_instruction=AUDITOR_SYSTEM_PROMPT,
                     response_mime_type="application/json",
                     temperature=0.0,  # Zero temperature for maximum deterministic rigor
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
                 )
                 response = client.models.generate_content(
                     model=self.model,
@@ -414,12 +415,20 @@ class AuditorAgent:
                 0,
             )
 
-        # 6. Semantic verification with LLM
-        status, reason, in_tok, out_tok = self._call_gemini_auditor(
-            claim_text=claim.text,
-            source_url=source_url,
-            passage=primary_evidence,
-        )
+        # 6. Semantic verification with LLM (executed with strict 12s timeout)
+        try:
+            status, reason, in_tok, out_tok = await asyncio.wait_for(
+                asyncio.to_thread(
+                    self._call_gemini_auditor,
+                    claim_text=claim.text,
+                    source_url=source_url,
+                    passage=primary_evidence,
+                ),
+                timeout=12.0,
+            )
+        except asyncio.TimeoutError:
+            logger.warning(f"Auditor Gemini check timed out for '{claim.text[:40]}'. Using deterministic fallback.")
+            status, reason, in_tok, out_tok = self._deterministic_audit_fallback(claim.text, source_url, primary_evidence)
 
         # Guard against lazy "Looks correct" responses
         if reason.lower() in {"looks correct", "looks correct.", "verified", "correct"}:
@@ -458,8 +467,14 @@ class AuditorAgent:
         total_out_tokens = 0
         results: List[AuditResult] = []
 
-        # Audit claims concurrently
-        tasks = [self.audit_single_claim(claim, cached_pages=cached_pages) for claim in claims]
+        # Audit claims with bounded concurrency to protect API rate limits
+        sem = asyncio.Semaphore(2)
+
+        async def _bounded_audit(claim: Claim) -> Tuple[AuditResult, int, int]:
+            async with sem:
+                return await self.audit_single_claim(claim, cached_pages=cached_pages)
+
+        tasks = [_bounded_audit(claim) for claim in claims]
         audit_outputs = await asyncio.gather(*tasks)
 
         for audit_res, in_tok, out_tok in audit_outputs:

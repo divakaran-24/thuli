@@ -378,6 +378,12 @@ async def run_benchmark(
     else:
         print("[INFO] Running against LIVE Gemini and Tavily APIs.")
         settings.ensure_directories()
+        import os
+        if os.path.exists(settings.database_path):
+            try:
+                os.remove(settings.database_path)
+            except Exception:
+                pass
         workflow = ResearchWorkflow()
 
     run_records: List[Dict[str, Any]] = []

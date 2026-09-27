@@ -276,17 +276,31 @@ class ClaimVerifier:
 
         # 4. Check evidence ID linkage
         if not claim.evidence_ids:
+            for cite in claim.citations:
+                norm_c = cite.rstrip("/").lower()
+                for ev_id, ev in evidence_map.items():
+                    if ev.url.rstrip("/").lower() == norm_c:
+                        claim.evidence_ids.append(ev_id)
+
+        resolved_eids = []
+        for eid in claim.evidence_ids:
+            if eid in evidence_map:
+                resolved_eids.append(eid)
+            else:
+                for cite in claim.citations:
+                    norm_c = cite.rstrip("/").lower()
+                    for ev_id, ev in evidence_map.items():
+                        if ev.url.rstrip("/").lower() == norm_c and ev_id not in resolved_eids:
+                            resolved_eids.append(ev_id)
+                            break
+
+        if resolved_eids:
+            claim.evidence_ids = resolved_eids
+        else:
             claim.is_verified = False
             claim.verification_status = "REJECTED"
-            claim.rejection_reason = "Missing evidence linkage: Claim does not reference any evidence_id."
+            claim.rejection_reason = f"Unresolvable evidence ID: '{claim.evidence_ids}' not found in active evidence pool."
             return False, claim.rejection_reason
-
-        for eid in claim.evidence_ids:
-            if eid not in evidence_map:
-                claim.is_verified = False
-                claim.verification_status = "REJECTED"
-                claim.rejection_reason = f"Unresolvable evidence ID: '{eid}' not found in active evidence pool."
-                return False, claim.rejection_reason
 
         # 5. Check source status (reject failed or unavailable sources)
         src_ok, src_reason = self.check_source_status(claim, evidence_map)

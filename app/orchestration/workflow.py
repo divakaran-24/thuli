@@ -134,7 +134,8 @@ class ResearchWorkflow:
         # Preliminary entity extraction from question
         prelim_entities, hits, misses = self.memory.lookup_entities([question])
 
-        plan, meta = self.planner.plan(
+        plan, meta = await asyncio.to_thread(
+            self.planner.plan,
             question=question,
             known_entities=prelim_entities,
             audit_policies=state.get("audit_policies", []),
@@ -354,7 +355,8 @@ class ResearchWorkflow:
             )
             return {"answer": fallback_answer}
 
-        answer, meta = self.analyst.synthesize(
+        answer, meta = await asyncio.to_thread(
+            self.analyst.synthesize,
             question=question,
             plan=plan or ResearchPlan(question=question, search_queries=[question]),
             evidence=evidences,

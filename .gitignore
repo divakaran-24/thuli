@@ -33,16 +33,10 @@ ENV/
 .coverage
 htmlcov/
 
-# Local Data and Logs
+# Local SQLite Database
 data/*.db
 data/*.sqlite3
 !data/.gitkeep
-logs/*.jsonl
-logs/*.log
-!logs/.gitkeep
-results/*.csv
-results/*.json
-!results/.gitkeep
 
 # IDE & OS
 .idea/

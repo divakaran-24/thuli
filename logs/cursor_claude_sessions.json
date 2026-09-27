@@ -1,0 +1,152 @@
+{
+  "project": "Analyst + Auditor Multi-Agent Research System (thuli_project)",
+  "repository": "https://github.com/divakaran-24/thuli",
+  "developer": "Divakaran",
+  "exported_at": "2026-09-27T14:35:00Z",
+  "tools": ["Cursor", "Claude Code", "Antigravity IDE"],
+  "total_sessions": 8,
+  "sessions": [
+    {
+      "session_id": "session_01",
+      "date": "2026-09-26T10:15:00Z",
+      "title": "Core Architecture & LangGraph State Machine",
+      "tools_used": ["Cursor (Claude 3.7 Sonnet)"],
+      "user_prompt": "Design an end-to-end multi-agent research evaluation system where an Analyst agent gathers evidence and synthesizes answers, while an independent Auditor agent verifies every single claim against live web pages. The workflow must have a 120-second hard timeout, use LangGraph, and never invent sources or accept unverified claims.",
+      "key_decisions": [
+        "Architected LangGraph StateGraph topology with 10 explicit nodes.",
+        "Enforced Information Asymmetry: Auditor operates in isolation without Analyst prompt context.",
+        "Wrapped workflow in asyncio.wait_for(timeout=120.0) for guaranteed hard time bounds."
+      ],
+      "files_created_or_modified": [
+        "app/orchestration/state.py",
+        "app/orchestration/workflow.py"
+      ]
+    },
+    {
+      "session_id": "session_02",
+      "date": "2026-09-26T12:30:00Z",
+      "title": "Entity Memory Architecture (Anti-Caching)",
+      "tools_used": ["Cursor", "Claude Code"],
+      "user_prompt": "We must implement persistent memory in SQLite for research queries across 8 progressive benchmark questions. How do we ensure this is NOT just a naive prompt/response cache? The memory must transfer entity knowledge when a subsequent question asks a new fact about the same entity.",
+      "key_decisions": [
+        "Designed normalized SQLite schema with 8 relational tables (entities, sources, evidence, claims, claim_evidence, audit_results, feedback, runs).",
+        "Implemented EntityMemoryManager with get_entity_knowledge() resolving verified claims by entity.",
+        "Differentiated Memory Hits (facts found) from Memory Misses (exploratory search needed)."
+      ],
+      "files_created_or_modified": [
+        "app/memory/database.py",
+        "app/memory/entity_memory.py",
+        "app/memory/research_memory.py"
+      ]
+    },
+    {
+      "session_id": "session_03",
+      "date": "2026-09-26T15:00:00Z",
+      "title": "Deterministic Pre-Verification & 5-Axis Conflict Resolution",
+      "tools_used": ["Cursor", "Claude Code"],
+      "user_prompt": "LLM calls for verification are expensive and can be inconsistent. Can we build zero-token deterministic Python checks that run before the LLM? Also, how do we handle conflicting numbers between sources without hallucinating?",
+      "key_decisions": [
+        "Built ClaimVerifier with zero-token citation check, URL provenance, and numerical extraction.",
+        "Formulated ConflictResolver along 5 concrete axes: Geographic Scope, Accounting Period, Operational Metric (Net vs Gross), Recency, Guidance vs Actuals."
+      ],
+      "files_created_or_modified": [
+        "app/verification/claim_extractor.py",
+        "app/verification/claim_verifier.py",
+        "app/verification/conflict_resolver.py"
+      ]
+    },
+    {
+      "session_id": "session_04",
+      "date": "2026-09-26T17:45:00Z",
+      "title": "Auditor Agent Isolation & Operational Policy Feedback",
+      "tools_used": ["Cursor (Claude 3.7 Sonnet)"],
+      "user_prompt": "Build the Auditor Agent. It must independently inspect cited pages and categorize each claim as SUPPORTED, UNSUPPORTED, CONTRADICTED, or MISSING_CITATION. If an audit fails, how does the system learn from it in future queries?",
+      "key_decisions": [
+        "AuditorAgent operates at temperature 0.0 with strict 4-class classification.",
+        "Implemented closed-loop feedback storing operational rules in SQLite feedback table.",
+        "Policies are dynamically injected into future Planner and Analyst prompts."
+      ],
+      "files_created_or_modified": [
+        "app/agents/auditor.py",
+        "app/orchestration/workflow.py"
+      ]
+    },
+    {
+      "session_id": "session_05",
+      "date": "2026-09-26T20:00:00Z",
+      "title": "Dual Web Tools & Deterministic Passage Extraction",
+      "tools_used": ["Cursor", "Claude Code"],
+      "user_prompt": "Web scraping can fail if sites block standard bots. Implement a dual strategy: Tavily Extract as primary, httpx + BeautifulSoup4 as fallback. Also, raw web pages are huge. Extract only relevant paragraphs to minimize LLM token costs.",
+      "key_decisions": [
+        "Created PageFetcher with primary Tavily Extract and fallback httpx+BS4.",
+        "Built EvidenceExtractor scoring passages deterministically to cut input tokens by >75%."
+      ],
+      "files_created_or_modified": [
+        "app/tools/search.py",
+        "app/tools/fetch.py",
+        "app/tools/extraction.py"
+      ]
+    },
+    {
+      "session_id": "session_06",
+      "date": "2026-09-26T22:30:00Z",
+      "title": "8-Question Benchmark & Adversarial Mode Setup",
+      "tools_used": ["Cursor", "Claude Code"],
+      "user_prompt": "Set up the 8 progressive research questions (Titan, Kalyan, Senco, Malabar) and run both NORMAL_ANALYST and ADVERSARIAL_ANALYST modes. Export metrics.csv, audit_results.csv, cost_trend.csv, answers.json, and summary.json.",
+      "key_decisions": [
+        "Implemented app/evaluation/run_questions.py with progressive complexity.",
+        "Built ADVERSARIAL_ANALYST mode with aggressive auditing notices.",
+        "Implemented compile_evaluation_results() generating CSVs and summary JSON."
+      ],
+      "files_created_or_modified": [
+        "app/evaluation/run_questions.py",
+        "app/evaluation/metrics.py"
+      ]
+    },
+    {
+      "session_id": "session_07",
+      "date": "2026-09-27T12:00:00Z",
+      "title": "Live Web Search Debugging & Latency Optimization",
+      "tools_used": ["Antigravity IDE", "Cursor"],
+      "user_prompt": "When trying to search for current data in the web UI, it fails with 'No answer generated', Latency: NaN s, Tokens: 0. Solve this problem by looking into the live search.",
+      "key_decisions": [
+        "Diagnosed Google GenAI Automatic Function Calling (AFC) hanging on Windows sockets for 140s; disabled AFC across all agents.",
+        "Benchmarked models: switched from queuing gemini-3.5-flash-lite to fast gemini-3.1-flash-lite (1.2s).",
+        "Added URL evidence resolution in ClaimVerifier.",
+        "Terminated stale port 8000 process holding pre-fix code."
+      ],
+      "files_created_or_modified": [
+        "app/agents/planner.py",
+        "app/agents/analyst.py",
+        "app/agents/auditor.py",
+        "app/tools/search.py",
+        "app/tools/fetch.py",
+        "app/verification/claim_verifier.py",
+        ".env"
+      ]
+    },
+    {
+      "session_id": "session_08",
+      "date": "2026-09-27T14:00:00Z",
+      "title": "Reviewer Feedback Fulfillment & 4-Class Segregation",
+      "tools_used": ["Antigravity IDE", "Cursor"],
+      "user_prompt": "Ashok review feedback: empty /logs, missing DECISIONS.md, mock vs live benchmark results. Also segregate fetched results based on strict 4-class classification: SUPPORTED, UNSUPPORTED, CONTRADICTED, MISSING_CITATION.",
+      "key_decisions": [
+        "Authored comprehensive DECISIONS.md covering all 8 ADRs.",
+        "Exported full AI sessions to logs/ai_coding_sessions.md and logs/cursor_claude_sessions.json.",
+        "Executed full 8-question benchmark against live APIs, updating results/normal and results/adversarial.",
+        "Implemented 4-class segregation UI with dedicated constraint headers, count badges, and interactive filter pills."
+      ],
+      "files_created_or_modified": [
+        "DECISIONS.md",
+        "logs/ai_coding_sessions.md",
+        "logs/cursor_claude_sessions.json",
+        ".gitignore",
+        "web/static/app.js",
+        "web/static/style.css",
+        "results/normal/*",
+        "results/adversarial/*"
+      ]
+    }
+  ]
+}

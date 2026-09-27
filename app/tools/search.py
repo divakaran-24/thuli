@@ -129,17 +129,15 @@ class WebSearchTool:
         self._client = None
 
     def _get_client(self) -> Any:
-        """Lazily initialize the AsyncTavilyClient."""
-        if self._client is None:
-            from tavily import AsyncTavilyClient
-            self._client = AsyncTavilyClient(api_key=self.api_key)
-        return self._client
+        """Initialize the AsyncTavilyClient for the active event loop."""
+        from tavily import AsyncTavilyClient
+        return AsyncTavilyClient(api_key=self.api_key)
 
     async def search(
         self,
         query: str,
         max_results: int = 5,
-        search_depth: str = "advanced",
+        search_depth: str = "basic",
     ) -> tuple[List[SearchResult], Dict[str, Any]]:
         """Execute an asynchronous search query.
 

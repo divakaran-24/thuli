@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     tavily_api_key: str = ""
 
     # Hard constraints & budgets per question
-    max_time_seconds: float = 120.0
+    max_time_seconds: float = 180.0
     max_search_calls: int = 10
     max_fetch_calls: int = 10
     max_llm_calls: int = 12
@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     max_output_tokens: int = 10000
 
     # Sub-operation timeouts (seconds)
-    search_timeout_seconds: float = 15.0
-    fetch_timeout_seconds: float = 15.0
-    llm_timeout_seconds: float = 30.0
+    search_timeout_seconds: float = 30.0
+    fetch_timeout_seconds: float = 30.0
+    llm_timeout_seconds: float = 45.0
 
     # Cost accounting constants
     # Default Gemini 2.5 Flash pricing: $0.15 / 1M prompt tokens, $0.60 / 1M completion tokens

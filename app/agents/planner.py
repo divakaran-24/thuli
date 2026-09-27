@@ -66,7 +66,7 @@ class PlannerAgent:
         self._client = None
 
     def _get_client(self) -> Any:
-        """Lazily initialize the google.genai Client."""
+        """Initialize the google.genai Client."""
         if self._client is None:
             from google import genai
             self._client = genai.Client(api_key=self.api_key)
@@ -123,6 +123,7 @@ class PlannerAgent:
                 system_instruction=system_prompt,
                 response_mime_type="application/json",
                 temperature=0.2,
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             )
 
             response = client.models.generate_content(
@@ -161,22 +162,25 @@ class PlannerAgent:
             entities.append("CaratLane")
         if "bluestone" in lower_prompt:
             entities.append("BlueStone")
-        if not entities:
-            entities = ["Titan Company", "Kalyan Jewellers", "Senco Gold"]
+        if "tamilnadu" in lower_prompt or "tamil nadu" in lower_prompt or "cm" in lower_prompt:
+            entities.append("Tamil Nadu")
 
         first_line = user_prompt.split("\n")[0].replace("USER RESEARCH QUESTION:", "").strip()
+
+        if not entities:
+            words = [w for w in first_line.split() if len(w) > 3 and w.lower() not in {"what", "which", "where", "when", "about", "current"}]
+            entities = [" ".join(words[:2])] if words else [first_line]
+
         plan_data = {
-            "question": first_line or "Which Indian jewellery retailer opened the most new stores in FY24?",
+            "question": first_line or "Research Question",
             "entities": entities,
             "sub_questions": [
-                f"What were the store count and expansion metrics for {entities[0]} in the target period?",
-                f"What were the showroom additions reported by {entities[1] if len(entities) > 1 else entities[0]}?",
-                "What do official BSE/NSE filings report regarding net vs gross additions?",
+                f"What are the verified facts regarding {first_line}?",
+                f"What do official and reputable sources report about {entities[0]}?",
             ],
             "search_queries": [
-                f"{entities[0]} investor presentation store count annual report",
-                f"{entities[1] if len(entities) > 1 else entities[0]} showroom additions official disclosure",
-                "Indian jewellery retail store additions FY24 BSE filing",
+                first_line,
+                f"{entities[0]} official latest facts",
             ],
             "required_evidence": [
                 "Official investor presentations",

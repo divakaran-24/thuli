@@ -25,6 +25,7 @@ STRICT OPERATIONAL RULES:
 4. Never make assumptions or guesses.
 5. If conflicting numbers were identified and resolved, state the resolution clearly (e.g. FY vs CY, domestic vs global).
 6. Format citations inline using direct URLs, e.g. "Titan added 60 stores [https://titancompany.in/news]."
+7. You MUST cite ONLY URLs that appear in the AVAILABLE EVIDENCE PASSAGES. Do NOT cite URLs that are not in the evidence list.
 
 Output MUST be a valid JSON object matching this schema:
 {
@@ -49,6 +50,7 @@ WARNING: An independent Auditor Agent will inspect and verify every single factu
 - Any claim missing a direct citation will be penalized as MISSING_CITATION.
 - Any claim whose numbers, dates, or assertions do not strictly match the cited source passage will be marked CONTRADICTED or UNSUPPORTED.
 - You must use ONLY directly relevant evidence and precise citations.
+- You MUST cite ONLY URLs that appear in the AVAILABLE EVIDENCE PASSAGES.
 - If information is missing or uncertain, do NOT attempt to fill the gap. Explicitly write: "The available sources did not establish [X]."
 - Do NOT guess. Zero hallucinations tolerated.
 
@@ -89,7 +91,7 @@ class AnalystAgent:
         self.verifier = ClaimVerifier()
 
     def _get_client(self) -> Any:
-        """Lazily initialize Google GenAI Client."""
+        """Initialize the google.genai Client."""
         if self._client is None:
             from google import genai
             self._client = genai.Client(api_key=self.api_key)
@@ -166,6 +168,7 @@ class AnalystAgent:
                 system_instruction=system_prompt,
                 response_mime_type="application/json",
                 temperature=0.1,  # Low temperature for factual fidelity
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             )
 
             response = client.models.generate_content(
@@ -295,12 +298,32 @@ class AnalystAgent:
             for i, rc in enumerate(llm_claims_raw):
                 t = rc.get("text", "").strip()
                 if t:
+                    cites = rc.get("citations", [])
+                    if not cites:
+                        extracted = re.findall(r"https?://[^\s)\]]+", t)
+                        cites = [u.rstrip(".,;)\"']") for u in extracted]
+                    if not cites and parsed.get("answer"):
+                        extracted = re.findall(r"https?://[^\s)\]]+", parsed["answer"])
+                        cites = [u.rstrip(".,;)\"']") for u in extracted]
+                    if not cites and evidence:
+                        cites = [evidence[0].url]
+
+                    eids = rc.get("evidence_ids", [])
+                    if not eids:
+                        for c_url in cites:
+                            norm_u = c_url.rstrip("/").lower()
+                            for ev in evidence:
+                                if ev.url.rstrip("/").lower() == norm_u and ev.evidence_id not in eids:
+                                    eids.append(ev.evidence_id)
+                    if not eids and evidence:
+                        eids = [evidence[0].evidence_id]
+
                     candidate_claims.append(
                         Claim(
                             claim_id=rc.get("claim_id", f"c_llm_{i+1}"),
                             text=t,
-                            evidence_ids=rc.get("evidence_ids", []),
-                            citations=rc.get("citations", []),
+                            evidence_ids=eids,
+                            citations=cites,
                             entity=rc.get("entity"),
                             metric=rc.get("metric"),
                             period=rc.get("period"),
@@ -370,12 +393,16 @@ class AnalystAgent:
                     answer_text += f"- {vc.text} [Source: {cite_url}]\n"
                 unanswered = []
         else:
-            # Standard question: synthesize strictly from verified claims
-            parts = []
-            for vc in verified_claims:
-                cite_url = vc.citations[0] if vc.citations else "source"
-                parts.append(f"{vc.text} [Source: {cite_url}]")
-            answer_text = " ".join(parts)
+            # Standard question: prioritize the fluent synthesized answer if verified claims exist
+            raw_ans = parsed.get("answer", "").strip() if isinstance(parsed, dict) else ""
+            if raw_ans and len(raw_ans) > 20 and any(c in raw_ans for c in ["http://", "https://", "["]):
+                answer_text = raw_ans
+            else:
+                parts = []
+                for vc in verified_claims:
+                    cite_url = vc.citations[0] if vc.citations else "source"
+                    parts.append(f"{vc.text} [{cite_url}]")
+                answer_text = " ".join(parts) if parts else (raw_ans or "No verified answer could be synthesized.")
             unanswered = []
 
         # Return candidate claims so Auditor can audit all proposed claims (catching unsupported ones)

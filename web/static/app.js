@@ -374,7 +374,42 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#039;');
   }
 
-  // Render Auditor Tab
+  // Render Auditor Tab with 4-Class Segregation
+  const CLASSIFICATION_CONSTRAINTS = {
+    SUPPORTED: {
+      title: 'SUPPORTED',
+      icon: 'fa-circle-check',
+      colorClass: 'group-SUPPORTED',
+      pillClass: 'pill-supported',
+      badgeClass: 'badge-SUPPORTED',
+      definition: 'Direct quotation corroborates the claim and all asserted metrics.'
+    },
+    UNSUPPORTED: {
+      title: 'UNSUPPORTED',
+      icon: 'fa-triangle-exclamation',
+      colorClass: 'group-UNSUPPORTED',
+      pillClass: 'pill-unsupported',
+      badgeClass: 'badge-UNSUPPORTED',
+      definition: 'Source document is accessible but does not contain corroborating evidence, or the URL failed to load.'
+    },
+    CONTRADICTED: {
+      title: 'CONTRADICTED',
+      icon: 'fa-circle-xmark',
+      colorClass: 'group-CONTRADICTED',
+      pillClass: 'pill-contradicted',
+      badgeClass: 'badge-CONTRADICTED',
+      definition: 'Source document explicitly asserts differing figures or opposite facts.'
+    },
+    MISSING_CITATION: {
+      title: 'MISSING_CITATION',
+      icon: 'fa-link-slash',
+      colorClass: 'group-MISSING_CITATION',
+      pillClass: 'pill-missing',
+      badgeClass: 'badge-MISSING_CITATION',
+      definition: 'Claim asserts factual information without an inline URL.'
+    }
+  };
+
   function renderAuditorTab(audits) {
     const container = document.getElementById('auditsList');
     if (!audits || audits.length === 0) {
@@ -401,35 +436,130 @@ document.addEventListener('DOMContentLoaded', () => {
       summarySub.textContent = 'Claims with discrepancies, scope mismatches, or missing citations were flagged.';
     }
 
-    container.innerHTML = audits.map((audit, idx) => {
-      const status = audit.status || 'UNAUDITED';
-      const badgeClass = `badge-${status}`;
-      const icon = status === 'SUPPORTED' ? 'fa-check' :
-                   status === 'CONTRADICTED' ? 'fa-xmark' :
-                   status === 'MISSING_CITATION' ? 'fa-link-slash' : 'fa-triangle-exclamation';
+    // Segregate audits into the strict 4-class classification buckets
+    const grouped = {
+      SUPPORTED: [],
+      UNSUPPORTED: [],
+      CONTRADICTED: [],
+      MISSING_CITATION: []
+    };
 
-      return `
-        <div class="audit-card">
-          <div class="audit-card-top">
-            <div class="audit-claim-text">"${escapeHtml(audit.claim)}"</div>
-            <div class="status-verdict-badge ${badgeClass}">
-              <i class="fa-solid ${icon}"></i> ${status}
+    audits.forEach(audit => {
+      const st = audit.status && grouped[audit.status] ? audit.status : 'UNSUPPORTED';
+      grouped[st].push(audit);
+    });
+
+    // 1. Render Interactive Filter Bar
+    let html = `
+      <div class="auditor-category-filters">
+        <button class="audit-filter-pill active" data-filter="ALL">
+          <i class="fa-solid fa-layer-group"></i> All Claims <span class="pill-count">${audits.length}</span>
+        </button>
+        <button class="audit-filter-pill pill-supported" data-filter="SUPPORTED">
+          <i class="fa-solid fa-circle-check"></i> Supported <span class="pill-count">${grouped.SUPPORTED.length}</span>
+        </button>
+        <button class="audit-filter-pill pill-unsupported" data-filter="UNSUPPORTED">
+          <i class="fa-solid fa-triangle-exclamation"></i> Unsupported <span class="pill-count">${grouped.UNSUPPORTED.length}</span>
+        </button>
+        <button class="audit-filter-pill pill-contradicted" data-filter="CONTRADICTED">
+          <i class="fa-solid fa-circle-xmark"></i> Contradicted <span class="pill-count">${grouped.CONTRADICTED.length}</span>
+        </button>
+        <button class="audit-filter-pill pill-missing" data-filter="MISSING_CITATION">
+          <i class="fa-solid fa-link-slash"></i> Missing Citation <span class="pill-count">${grouped.MISSING_CITATION.length}</span>
+        </button>
+      </div>
+      <div class="audit-segregated-container">
+    `;
+
+    // 2. Render each of the 4 Segregated Constraint Groups
+    const order = ['SUPPORTED', 'UNSUPPORTED', 'CONTRADICTED', 'MISSING_CITATION'];
+
+    order.forEach(categoryKey => {
+      const meta = CLASSIFICATION_CONSTRAINTS[categoryKey];
+      const items = grouped[categoryKey];
+
+      html += `
+        <div class="audit-segregated-group ${meta.colorClass}" data-category="${categoryKey}">
+          <div class="group-header">
+            <div class="group-title-wrap">
+              <div class="group-icon"><i class="fa-solid ${meta.icon}"></i></div>
+              <div class="group-titles">
+                <div class="group-title">
+                  ${meta.title}
+                  <span class="group-count-badge">${items.length}</span>
+                </div>
+                <div class="group-definition">${meta.definition}</div>
+              </div>
             </div>
           </div>
-          <div class="audit-reason">
-            <strong>Auditor Assessment:</strong> ${escapeHtml(audit.reason || 'Verified against cited disclosure.')}
+          <div class="group-cards-list">
+      `;
+
+      if (items.length === 0) {
+        html += `
+          <div class="empty-group-notice">
+            <i class="fa-solid fa-shield"></i>
+            <span>No claims categorized under <strong>${meta.title}</strong> for this research run.</span>
           </div>
-          ${audit.evidence ? `<div class="audit-evidence-passage"><strong>Cited Passage:</strong> "${escapeHtml(audit.evidence)}"</div>` : ''}
-          ${audit.source_url ? `
-            <div>
-              <a href="${audit.source_url}" target="_blank" rel="noopener noreferrer" class="audit-citation-link">
-                <i class="fa-solid fa-external-link"></i> ${audit.source_url}
-              </a>
+        `;
+      } else {
+        html += items.map((audit) => {
+          const status = audit.status || categoryKey;
+          const badgeClass = meta.badgeClass;
+          const icon = meta.icon;
+
+          return `
+            <div class="audit-card">
+              <div class="audit-card-top">
+                <div class="audit-claim-text">"${escapeHtml(audit.claim)}"</div>
+                <div class="status-verdict-badge ${badgeClass}">
+                  <i class="fa-solid ${icon}"></i> ${status}
+                </div>
+              </div>
+              <div class="audit-reason">
+                <strong>Auditor Assessment:</strong> ${escapeHtml(audit.reason || 'Verified against cited disclosure.')}
+              </div>
+              ${audit.evidence ? `<div class="audit-evidence-passage"><strong>Cited Passage:</strong> "${escapeHtml(audit.evidence)}"</div>` : ''}
+              ${audit.source_url ? `
+                <div>
+                  <a href="${audit.source_url}" target="_blank" rel="noopener noreferrer" class="audit-citation-link">
+                    <i class="fa-solid fa-external-link"></i> ${escapeHtml(audit.source_url)}
+                  </a>
+                </div>
+              ` : ''}
             </div>
-          ` : ''}
+          `;
+        }).join('');
+      }
+
+      html += `
+          </div>
         </div>
       `;
-    }).join('');
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+
+    // 3. Attach interactive filter handler
+    const filterPills = container.querySelectorAll('.audit-filter-pill');
+    const groupElements = container.querySelectorAll('.audit-segregated-group');
+
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.dataset.filter;
+
+        groupElements.forEach(group => {
+          if (filter === 'ALL' || group.dataset.category === filter) {
+            group.style.display = 'block';
+          } else {
+            group.style.display = 'none';
+          }
+        });
+      });
+    });
   }
 
   // Render Evidence Tab

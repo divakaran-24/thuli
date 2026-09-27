@@ -1,37 +1,37 @@
 {
-  "evaluation_timestamp": "2026-09-26T20:32:57.328696",
+  "evaluation_timestamp": "2026-09-27T19:06:46.432196",
   "total_questions_evaluated": 8,
   "latency": {
-    "average_latency_seconds": 0.88,
-    "max_latency_seconds": 2.62
+    "average_latency_seconds": 21.53,
+    "max_latency_seconds": 35.88
   },
   "tokens": {
-    "total_tokens": 10125,
-    "average_tokens_per_question": 1265.6
+    "total_tokens": 112227,
+    "average_tokens_per_question": 14028.4
   },
   "cost": {
-    "total_cost_usd": 0.182706,
-    "average_cost_usd_per_question": 0.022838,
-    "total_cost_inr": 15.8042,
-    "average_cost_inr_per_question": 1.9755,
+    "total_cost_usd": 0.44621,
+    "average_cost_usd_per_question": 0.055776,
+    "total_cost_inr": 38.5973,
+    "average_cost_inr_per_question": 4.8247,
     "exchange_rate_usd_to_inr": 86.5,
     "exchange_rate_date": "2026-09-26"
   },
   "tool_usage": {
-    "average_search_calls_per_question": 1.75,
-    "average_fetch_calls_per_question": 2.75,
+    "average_search_calls_per_question": 4.62,
+    "average_fetch_calls_per_question": 6.0,
     "average_llm_calls_per_question": 3.0
   },
   "memory_transfer": {
-    "total_memory_hits": 4,
-    "total_memory_misses": 10
+    "total_memory_hits": 3,
+    "total_memory_misses": 24
   },
   "auditor_verification": {
-    "total_claims_audited": 9,
-    "supported_claims": 7,
-    "unsupported_claims": 0,
-    "contradicted_claims": 2,
+    "total_claims_audited": 16,
+    "supported_claims": 12,
+    "unsupported_claims": 3,
+    "contradicted_claims": 1,
     "missing_citations": 0,
-    "supported_rate_percent": 77.78
+    "supported_rate_percent": 75.0
   }
 }

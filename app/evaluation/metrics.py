@@ -42,7 +42,22 @@ def compile_evaluation_results(
         qid = record["question_id"]
         q_text = record["question"]
         mode = record.get("mode", "NORMAL_ANALYST")
-        metrics: RunMetrics = record["metrics"]
+        metrics: Optional[RunMetrics] = record.get("metrics")
+        if not metrics:
+            metrics = RunMetrics(
+                latency_ms=120000.0,
+                input_tokens=0,
+                output_tokens=0,
+                total_tokens=0,
+                estimated_cost_usd=0.0,
+                estimated_cost_inr=0.0,
+                llm_calls=0,
+                search_calls=0,
+                fetch_calls=0,
+                memory_hits=0,
+                memory_misses=0,
+                failures=["Timeout or execution failure"],
+            )
         answer = record.get("answer")
         audits: List[AuditResult] = record.get("audit_results", [])
 

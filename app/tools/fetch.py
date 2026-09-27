@@ -216,9 +216,10 @@ class PageFetcher:
                 if not self.tavily_api_key or self.tavily_api_key.strip() in ("", "your_tavily_api_key_here"):
                     return None
                 client = self._get_tavily_client()
+                extract_timeout = min(self.timeout, 10.0)
                 res = await asyncio.wait_for(
                     client.extract(urls=[url]),
-                    timeout=self.timeout,
+                    timeout=extract_timeout,
                 )
 
             latency_ms = (time.perf_counter() - start_time) * 1000.0
@@ -298,63 +299,55 @@ class PageFetcher:
                 )
 
         # Real httpx client
+        http_timeout = min(self.timeout, 8.0)
         async with httpx.AsyncClient(
             headers=headers,
             follow_redirects=True,
-            timeout=self.timeout,
+            timeout=http_timeout,
             verify=False,  # Avoid SSL failures on government or older corporate portals
         ) as client:
-            last_error = None
-            for attempt in range(1, 3):
-                try:
-                    response = await client.get(url)
-                    latency_ms = (time.perf_counter() - start_time) * 1000.0
+            try:
+                response = await client.get(url)
+                latency_ms = (time.perf_counter() - start_time) * 1000.0
 
-                    if response.status_code >= 400:
-                        return FetchedPage(
-                            url=url,
-                            title=f"Source: {domain}",
-                            publisher=domain,
-                            published_date=None,
-                            text="",
-                            status_code=response.status_code,
-                            method_used="httpx_bs4",
-                            latency_ms=round(latency_ms, 2),
-                            success=False,
-                            error=f"HTTP {response.status_code}",
-                            source_status=SourceStatus.FETCH_FAILED,
-                        )
-
-                    return self._parse_html(
+                if response.status_code >= 400:
+                    return FetchedPage(
                         url=url,
-                        domain=domain,
-                        html=response.text,
+                        title=f"Source: {domain}",
+                        publisher=domain,
+                        published_date=None,
+                        text="",
                         status_code=response.status_code,
-                        latency_ms=latency_ms,
+                        method_used="httpx_bs4",
+                        latency_ms=round(latency_ms, 2),
+                        success=False,
+                        error=f"HTTP {response.status_code}",
+                        source_status=SourceStatus.FETCH_FAILED,
                     )
-                except httpx.TimeoutException:
-                    last_error = f"httpx request timed out after {self.timeout}s"
-                    logger.warning(f"{last_error} on attempt {attempt}/2 for {url}")
-                except Exception as exc:
-                    last_error = f"{type(exc).__name__}: {exc}"
-                    logger.warning(f"httpx fetch failed for {url} (attempt {attempt}/2): {last_error}")
-                    if attempt < 2:
-                        await asyncio.sleep(0.5)
 
-            latency_ms = (time.perf_counter() - start_time) * 1000.0
-            return FetchedPage(
-                url=url,
-                title=f"Source: {domain}",
-                publisher=domain,
-                published_date=None,
-                text="",
-                status_code=0,
-                method_used="httpx_bs4",
-                latency_ms=round(latency_ms, 2),
-                success=False,
-                error=last_error or "Direct fetch failed",
-                source_status=SourceStatus.FETCH_FAILED,
-            )
+                return self._parse_html(
+                    url=url,
+                    domain=domain,
+                    html=response.text,
+                    status_code=response.status_code,
+                    latency_ms=latency_ms,
+                )
+            except Exception as exc:
+                latency_ms = (time.perf_counter() - start_time) * 1000.0
+                return FetchedPage(
+                    url=url,
+                    title=f"Source: {domain}",
+                    publisher=domain,
+                    published_date=None,
+                    text="",
+                    status_code=0,
+                    method_used="httpx_bs4",
+                    latency_ms=round(latency_ms, 2),
+                    success=False,
+                    error=str(exc),
+                    source_status=SourceStatus.FETCH_FAILED,
+                )
+
 
     @staticmethod
     def _parse_html(
