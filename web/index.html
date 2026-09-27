@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analyst + Auditor AI Research Agent</title>
+  <meta name="description" content="State-of-the-art evidence-grounded AI research platform with Python claim gating and independent auditor verification.">
+  
+  <!-- Modern Typography (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- App Wrapper -->
+  <div class="app-layout">
+    
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-atom"></i>
+        </div>
+        <div class="brand-titles">
+          <h1>THULI <span class="brand-accent">RESEARCH</span></h1>
+          <p class="brand-sub">Analyst + Independent Auditor Agent</p>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <div class="status-pill" id="geminiStatusPill">
+          <span class="status-dot"></span>
+          <span class="status-label">Gemini 2.5 Flash</span>
+        </div>
+        <div class="status-pill" id="tavilyStatusPill">
+          <span class="status-dot"></span>
+          <span class="status-label">Tavily Search</span>
+        </div>
+        <div class="status-pill" id="auditorStatusPill">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Strict Auditor Gate</span>
+        </div>
+        <button class="btn-icon" id="toggleHistoryBtn" title="View Recent Research Runs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span class="btn-text">History</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+      
+      <!-- Query Hero Section -->
+      <section class="query-hero-section">
+        <div class="hero-content">
+          <h2 class="hero-title">
+            Deep Corporate Intelligence with <span class="gradient-text">Zero Hallucinations</span>
+          </h2>
+          <p class="hero-desc">
+            Every factual claim is extracted from verified web disclosures, validated by a deterministic Python claim gate, and independently audited.
+          </p>
+        </div>
+
+        <!-- Query Input Card -->
+        <div class="query-card">
+          <div class="query-input-wrapper">
+            <div class="input-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <textarea 
+              id="questionInput" 
+              class="query-textarea" 
+              placeholder="Ask any research question (e.g. 'What is gold rate in chennai?' or corporate store expansion metrics)..."
+              rows="2"
+            ></textarea>
+            <button class="btn-clear" id="clearBtn" title="Clear input">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="query-controls">
+            <!-- Mode Selector -->
+            <div class="mode-selector-group">
+              <span class="control-label">Analyst Mode:</span>
+              <div class="mode-tabs">
+                <button type="button" class="mode-tab active" data-mode="NORMAL_ANALYST">
+                  <i class="fa-solid fa-scale-balanced"></i> Normal Analyst
+                </button>
+                <button type="button" class="mode-tab" data-mode="ADVERSARIAL_ANALYST">
+                  <i class="fa-solid fa-shield-virus"></i> Adversarial Auditor
+                </button>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="btn-submit" id="submitBtn">
+              <span class="btn-label"><i class="fa-solid fa-bolt"></i> Run Research</span>
+              <span class="btn-shortcut">Ctrl+Enter</span>
+            </button>
+          </div>
+
+          <!-- Suggestion Chips -->
+          <div class="suggestions-container">
+            <span class="suggestions-label"><i class="fa-regular fa-lightbulb"></i> Try asking:</span>
+            <div class="suggestion-chips">
+              <button class="chip" data-query="What is gold rate in chennai?">
+                <i class="fa-solid fa-coins"></i> Gold rate in Chennai
+              </button>
+              <button class="chip" data-query="Which Indian jewellery retailer opened the most new stores in FY24?">
+                <i class="fa-solid fa-shop"></i> Store openings in FY24
+              </button>
+              <button class="chip" data-query="What are the core retail jewellery brands operated by Titan Company Limited in India?">
+                <i class="fa-solid fa-gem"></i> Titan retail jewellery brands
+              </button>
+              <button class="chip" data-query="How many retail showrooms did Kalyan Jewellers operate in India at the close of FY 2023-24?">
+                <i class="fa-solid fa-building-columns"></i> Kalyan Jewellers FY24 showrooms
+              </button>
+              <button class="chip" data-query="Between Titan Company and Kalyan Jewellers, which retailer added more net new showrooms during FY 2023-24?">
+                <i class="fa-solid fa-code-compare"></i> Titan vs Kalyan showroom additions
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-time Pipeline Progress Stepper (Visible during & after run) -->
+      <section class="pipeline-section" id="pipelineSection" style="display: none;">
+        <div class="pipeline-header">
+          <h3><i class="fa-solid fa-diagram-project"></i> LangGraph Research Pipeline</h3>
+          <span class="pipeline-status-text" id="pipelineStatusText">Initializing graph...</span>
+        </div>
+        <div class="stepper-track">
+          <div class="step-node" id="step-init">
+            <div class="step-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="step-label">Init Memory</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-planner">
+            <div class="step-icon"><i class="fa-solid fa-compass"></i></div>
+            <div class="step-label">Planner</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-search">
+            <div class="step-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="step-label">Web Search</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-fetch">
+            <div class="step-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+            <div class="step-label">Page Fetch</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-extract">
+            <div class="step-icon"><i class="fa-solid fa-filter"></i></div>
+            <div class="step-label">Extraction</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-gate">
+            <div class="step-icon"><i class="fa-solid fa-key"></i></div>
+            <div class="step-label">Claim Gate</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-analyst">
+            <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+            <div class="step-label">Analyst</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-node" id="step-auditor">
+            <div class="step-icon"><i class="fa-solid fa-shield-check"></i></div>
+            <div class="step-label">Auditor</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Dashboard (Hidden initially) -->
+      <section class="results-dashboard" id="resultsDashboard" style="display: none;">
+        
+        <!-- Metrics Bar -->
+        <div class="metrics-ribbon" id="metricsRibbon">
+          <div class="metric-card">
+            <div class="metric-icon latency-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Latency</span>
+              <span class="metric-val" id="metricLatency">-- s</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon token-icon"><i class="fa-solid fa-microchip"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Tokens</span>
+              <span class="metric-val" id="metricTokens">--</span>
+              <span class="metric-sub" id="metricTokensDetail">In: 0 | Out: 0</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon cost-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Cost</span>
+              <span class="metric-val" id="metricCostInr">Rs. 0.00</span>
+              <span class="metric-sub" id="metricCostUsd">$0.00 USD</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon tool-icon"><i class="fa-solid fa-wrench"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Tool Calls</span>
+              <span class="metric-val" id="metricToolCalls">0</span>
+              <span class="metric-sub" id="metricToolCallsDetail">0s, 0f, 0l</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon audit-icon"><i class="fa-solid fa-shield-heart"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Auditor Verdict</span>
+              <span class="metric-val" id="metricAuditSummary">--</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Content Tabs -->
+        <div class="results-tabs-wrapper">
+          <div class="results-tab-bar">
+            <button class="res-tab active" data-target="tabAnswer">
+              <i class="fa-solid fa-file-lines"></i> Synthesized Answer
+            </button>
+            <button class="res-tab" data-target="tabAuditor">
+              <i class="fa-solid fa-user-shield"></i> Auditor Verification
+              <span class="tab-badge" id="auditorBadge">0</span>
+            </button>
+            <button class="res-tab" data-target="tabEvidence">
+              <i class="fa-solid fa-dna"></i> Claims & Evidence Gate
+              <span class="tab-badge" id="evidenceBadge">0</span>
+            </button>
+            <button class="res-tab" data-target="tabSources">
+              <i class="fa-solid fa-link"></i> Sources Fetched
+              <span class="tab-badge" id="sourcesBadge">0</span>
+            </button>
+            <button class="res-tab" data-target="tabPlan">
+              <i class="fa-solid fa-sitemap"></i> Plan & Policies
+            </button>
+          </div>
+
+          <!-- Tab 1: Synthesized Answer -->
+          <div class="tab-pane active" id="tabAnswer">
+            <div class="answer-card">
+              <div class="answer-header">
+                <div class="answer-title-group">
+                  <div class="answer-badge" id="answerModeBadge">NORMAL ANALYST</div>
+                  <h3 id="answerQuestionTitle">Research Answer</h3>
+                </div>
+                <div class="answer-actions">
+                  <button class="btn-copy" id="copyAnswerBtn" title="Copy answer to clipboard">
+                    <i class="fa-regular fa-copy"></i> Copy Answer
+                  </button>
+                </div>
+              </div>
+              <div class="answer-body markdown-body" id="answerBody">
+                <!-- Synthesized text formatted with citations -->
+              </div>
+              <div class="unanswered-box" id="unansweredBox" style="display: none;">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> Unanswered Aspects / Gate Notes:</h4>
+                <ul id="unansweredList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Auditor Verification -->
+          <div class="tab-pane" id="tabAuditor">
+            <div class="auditor-summary-card" id="auditorSummaryCard">
+              <div class="auditor-hero">
+                <div class="auditor-icon-wrap" id="auditorSummaryIcon">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                  <h4 id="auditorSummaryHeadline">Independent Auditor Review</h4>
+                  <p id="auditorSummarySub">Every claim was evaluated against primary source passages.</p>
+                </div>
+              </div>
+            </div>
+            <div class="audits-list" id="auditsList">
+              <!-- Audit result cards will be rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Claims & Evidence Gate -->
+          <div class="tab-pane" id="tabEvidence">
+            <div class="evidence-intro">
+              <p>Every factual statement must pass the deterministic Python Claim Gate before entering the final answer.</p>
+            </div>
+            <div class="evidence-grid" id="evidenceGrid">
+              <!-- Evidence & gated claims rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 4: Sources Fetched -->
+          <div class="tab-pane" id="tabSources">
+            <div class="sources-list" id="sourcesList">
+              <!-- Sources cards rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 5: Plan & Policies -->
+          <div class="tab-pane" id="tabPlan">
+            <div class="plan-grid">
+              <div class="plan-card">
+                <h4><i class="fa-solid fa-bullseye"></i> Research Plan Entities</h4>
+                <div class="tag-cloud" id="planEntities"></div>
+              </div>
+              <div class="plan-card">
+                <h4><i class="fa-solid fa-list-check"></i> Sub-Questions Formulated</h4>
+                <ul class="plan-list" id="planSubQuestions"></ul>
+              </div>
+              <div class="plan-card">
+                <h4><i class="fa-solid fa-magnifying-glass-arrow-right"></i> Executed Search Queries</h4>
+                <ul class="plan-list" id="planQueries"></ul>
+              </div>
+              <div class="plan-card">
+                <h4><i class="fa-solid fa-shield"></i> Verification Requirements</h4>
+                <ul class="plan-list" id="planVerification"></ul>
+              </div>
+              <div class="plan-card full-width">
+                <h4><i class="fa-solid fa-book-bookmark"></i> Operational Feedback Policies Applied</h4>
+                <ul class="policy-list" id="learnedPoliciesList"></ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- History Sidebar Drawer -->
+    <div class="history-overlay" id="historyOverlay"></div>
+    <aside class="history-drawer" id="historyDrawer">
+      <div class="drawer-header">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Research History</h3>
+        <button class="btn-close" id="closeHistoryBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body" id="historyList">
+        <div class="loading-state">
+          <i class="fa-solid fa-circle-notch fa-spin"></i> Loading recent runs...
+        </div>
+      </div>
+    </aside>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastMessage"></div>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
